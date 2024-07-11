@@ -13,7 +13,7 @@ const useDebts = () => {
       if (!user) return;
 
       try {
-        const response = await fetch(`http://localhost:3000/api/debts/${user.id}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/debts/${user.id}`);
         const data = await response.json();
         setDebts(data);
       } catch (error) {
