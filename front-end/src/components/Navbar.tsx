@@ -15,11 +15,13 @@ import AdbIcon from "@mui/icons-material/Adb";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "wouter";
 import { useUser } from "../hooks/useUser";
-
+import { Badge } from "@mui/material";
+import { useCart } from "../hooks/useCart";
 const pages = ["inicio", "compras"];
 const settings = ["Cerrar Sesión"];
 
 function Navbar() {
+  const { cart } = useCart();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -144,11 +146,22 @@ function Navbar() {
           </Box>
           {/* add cart to icon button */}
           <Box marginRight={5}>
-          <Link href="/cart" style={{ textDecoration: "none", color: "inherit"}}>
-          <IconButton color="inherit" >
-            <ShoppingCartIcon scale={2}/>
-          </IconButton>
-          </Link>
+            <Link
+              href="/cart"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <IconButton color="inherit">
+                <Badge
+                  badgeContent={cart.reduce(
+                    (total, item) => total + item.quantity,
+                    0
+                  )}
+                  color="secondary"
+                >
+                  <ShoppingCartIcon scale={2} />
+                </Badge>
+              </IconButton>
+            </Link>
           </Box>
           {user ? (
             <Box sx={{ flexGrow: 0 }}>

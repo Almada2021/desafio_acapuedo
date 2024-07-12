@@ -1,7 +1,7 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import Product from "../lib/entities/Product";
 
-interface CartItem extends Product {
+export interface CartItem extends Product {
   quantity: number;
 }
 
