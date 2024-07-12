@@ -43,7 +43,7 @@ app.post("/hook", (req: Request, res: Response) => {
 function procesarEstadoDeuda(debt: any, res: Response) {
   // Aquí puedes procesar el estado de la deuda según sea necesario
   // Por ejemplo, actualizar el estado de la deuda en tu base de datos
-
+  console.log(`Recibimos notificación de estado deuda para la deuda ${debt}`)
   // Ejemplo de respuesta
   res.status(200).json({ info: 'Estado de deuda procesado', debt });
 }
