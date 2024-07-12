@@ -5,6 +5,7 @@ import crypto from "crypto";
 import debtRoutes from './routes/debtRoutes';
 import productRoutes from './routes/productRoutes';
 import bodyParser from 'body-parser';
+import prisma from "../infrastructure/prismaClient";
 const app = express();
 const API_SECRET = process.env.API_KEY;
 
@@ -40,15 +41,31 @@ app.post("/hook", (req: Request, res: Response) => {
   }
 });
 
-function procesarEstadoDeuda(debt: any, res: Response) {
-  // Aquí puedes procesar el estado de la deuda según sea necesario
-  // Por ejemplo, actualizar el estado de la deuda en tu base de datos
-  console.log(`Recibimos notificación de estado deuda para la deuda ${debt}`)
-  // Ejemplo de respuesta
-  res.status(200).json({ info: 'Estado de deuda procesado', debt });
+async function procesarEstadoDeuda(debt: any, res: Response) {
+  try {
+    const { docId, payStatus } = debt;
+    const existingDebt = await prisma.debt.findUnique({
+      where: { id: docId }
+    });
+
+    if (!existingDebt) {
+      throw new Error('Deuda no encontrada');
+    }
+
+    if (new Date(payStatus.time) > new Date(existingDebt.updatedAt)) {
+      await prisma.debt.update({
+        where: { id: docId },
+        data: { status: payStatus.status }
+      });
+      console.log(`Estado de deuda actualizado para la deuda ${docId}`);
+      res.status(200).json({ info: 'Estado de deuda procesado', debt });
+    } else {
+      res.status(400).json({ info: 'El estado de la deuda no es más reciente' });
+    }
+  } catch (e: any) {
+    res.status(500).json({ info: 'Error al procesar el estado de la deuda', exception: e.message });
+  }
 }
-
-
 export class Server {
   public static start() {
     app.listen(3000, () => {

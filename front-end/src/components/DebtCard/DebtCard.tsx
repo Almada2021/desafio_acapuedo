@@ -8,6 +8,7 @@ interface DebtCardProps {
 }
 
 const DebtCard = ({ debt }: DebtCardProps) => {
+  console.log(debt); 
   return (
     <Card>
       <CardContent>
