@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { useUser } from "../../hooks/useUser";
 import jsPDF from "jspdf";
-import "../../jspdf-autotable"; // Import the plugin
 
 interface Product {
   id: number;
