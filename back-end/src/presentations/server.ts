@@ -61,7 +61,6 @@ async function procesarEstadoDeuda(debt: any, res: Response) {
         where: { id },
         data: { status: PayStatus[newStatus] },
       });
-      // @ts-ignore
       const carts: Cart[] = await prisma.cart.findMany({
         where: { debtId: id },
       });
