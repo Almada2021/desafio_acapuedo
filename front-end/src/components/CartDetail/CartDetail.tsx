@@ -56,16 +56,22 @@ const CartDetail = () => {
       0
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (doc as any).autoTable({
-      head: [["Nombre", "Cantidad", "Precio", "Subtotal"]],
-      body: cart.map((item) => [
-        item.name,
-        item.quantity,
-        item.price.toLocaleString() + " Gs",
-        (item.price * item.quantity).toLocaleString() + " Gs",
-      ]),
-      foot: [["", "", "Total", total.toLocaleString() + " Gs"]],
+    doc.text("Nombre", 20, 30);
+    doc.text("Cantidad", 70, 30);
+    doc.text("Precio", 120, 30);
+    doc.text("Subtotal", 170, 30);
+    
+    let y = 40;
+    cart.forEach((item) => {
+      doc.text(item.name, 20, y);
+      doc.text(item.quantity.toString(), 70, y);
+      doc.text(item.price.toLocaleString() + " Gs", 120, y);
+      doc.text((item.price * item.quantity).toLocaleString() + " Gs", 170, y);
+      y += 10;
     });
+    
+    doc.text("Total", 120, y);
+    doc.text(total.toLocaleString() + " Gs", 170, y);
     doc.save("boleta.pdf");
   };
   if (!user) {
