@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useUser } from "../../hooks/useUser";
 import jsPDF from "jspdf";
-import "jspdf-autotable"; // Import the plugin
+import "../../jspdf-autotable"; // Import the plugin
 
 interface Product {
   id: number;
@@ -56,7 +56,8 @@ const CartDetail = () => {
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-    doc.autoTable({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (doc as any).autoTable({
       head: [["Nombre", "Cantidad", "Precio", "Subtotal"]],
       body: cart.map((item) => [
         item.name,
