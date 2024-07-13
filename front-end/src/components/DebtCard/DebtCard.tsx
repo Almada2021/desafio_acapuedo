@@ -8,7 +8,6 @@ interface DebtCardProps {
 }
 
 const DebtCard = ({ debt }: DebtCardProps) => {
-  console.log(debt); 
   return (
     <Card>
       <CardContent>
@@ -18,13 +17,17 @@ const DebtCard = ({ debt }: DebtCardProps) => {
         <Typography color="textSecondary">
           Valor: {debt.value.toLocaleString()} Gs
         </Typography>
+
+        <Typography color="textSecondary">
+          Estado: {debt.status}
+        </Typography>
         <Typography color="textSecondary">
           Creada: {new Date(debt.createdAt).toLocaleDateString()}
         </Typography>
         <Link
             href={`/debts/${debt.id}`}
         >
-          Obtener informacion
+           Obtener informacion
         </Link>
       </CardContent>
     </Card>

@@ -12,9 +12,10 @@ import Product from "./lib/entities/Product";
 import CartTable from "./components/Cart/Cart";
 import DebtList from "./components/DebtsList/DebtsList";
 import DebtDetail from "./components/DebtDetail/DebtDetail";
+import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
 function App() {
   const { user } = useUser();
-  const products = useProducts();
+  const {products, loading} = useProducts();
   const [location] = useLocation();
   if (user && location == "/register") {
     return <Redirect href="/inicio" />;
@@ -84,9 +85,11 @@ function App() {
             component="section"
             p={2}
             display="flex"
+            justifyContent="center"
             flexWrap="wrap"
             padding={2}
           >
+            {loading && <LoadingOverlay />}
             {products.map((product: Product) => (
               <ProductCard key={product?.id} product={product} />
             ))}

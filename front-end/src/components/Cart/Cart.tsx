@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,43 +13,62 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { useCart } from "../../hooks/useCart";
 import { Button } from "@mui/material";
 import { useUser } from "../../hooks/useUser";
-
+import LoadingOverlay from "../LoadingOverlay/LoadingOverlay";
 const CartTable = () => {
-  const { cart, removeFromCart, decreaseQuantity } = useCart();
+  const { cart, removeFromCart, decreaseQuantity, resetCart } = useCart();
   const { user } = useUser();
+  const [loading, setLoading] = useState(false);
+
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
+
   const handleCheckout = async () => {
     const total = calculateTotal();
     if (!user) {
       alert("Debes iniciar sesión o Registrarte para realizar la compra");
       return;
     }
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/debts`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user: user?.id,
-          docId: Math.random().toString(36).substr(2, 9),
-          value: total,
-          label: "Compra de productos a DON ONOFRE",
-        }),
+
+    setLoading(true); // Set loading to true before starting the checkout process
+
+    try {
+      if(total === 0) {
+        return alert("No hay productos en el carrito");
       }
-    );
-    const data = await response.json();
-    if (data.meta.status === "success") {
-      window.location.href = data.debt.payUrl;
-    } else {
-      console.error("Error during checkout:", data);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/debts`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user: user?.id,
+            docId: Math.random().toString(36).substr(2, 9),
+            value: total,
+            label: "Compra de productos a DON ONOFRE",
+          }),
+        }
+      );
+
+      const data = await response.json();
+      if (data.meta.status === "success") {
+        window.location.href = data.debt.payUrl;
+      } else {
+        console.error("Error during checkout:", data);
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    } finally {
+      setLoading(false); // Set loading to false after the checkout process is complete
+      resetCart();
     }
   };
+
   return (
     <>
+      {loading && <LoadingOverlay />} {/* Show the overlay when loading */}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -102,6 +122,7 @@ const CartTable = () => {
         color="primary"
         onClick={handleCheckout}
         sx={{ mt: 2 }}
+        disabled={loading} // Disable the button while loading
       >
         Pagar
       </Button>

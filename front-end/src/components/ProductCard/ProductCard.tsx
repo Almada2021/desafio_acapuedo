@@ -2,10 +2,11 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Button, CardActionArea, CardActions } from "@mui/material";
+import { Button, CardActionArea, CardActions, IconButton, TextField } from "@mui/material";
 import Product from "../../lib/entities/Product";
 import { useCart } from "../../hooks/useCart";
-
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 export default function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useCart();
 
@@ -30,12 +31,30 @@ export default function ProductCard({ product }: { product: Product }) {
           <Typography variant="body2" color="text.secondary">
             Precio: {product.price.toLocaleString()}&nbsp;Gs
           </Typography>
-          {/* <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary">
             Stock: {product.stock}
-          </Typography> */}
+          </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
+      <CardActions
+        style={{ justifyContent: "center"  }}
+      >
+        <IconButton color="inherit">
+          <RemoveIcon/>
+        </IconButton>
+        <TextField 
+          style={{ width: "40px", justifyContent: "center", alignContent: "center", display: "flex", textAlign: "center"}}
+          id="outlined-basic" 
+          value={0} 
+          variant="outlined" 
+        />
+        <IconButton color="inherit">
+          <AddIcon />
+        </IconButton>
+
+      </CardActions>
+      <CardActions >
+
         <Button size="small" color="primary" onClick={() => addToCart(product)}>
           Agregar
         </Button>
