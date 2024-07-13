@@ -67,7 +67,7 @@ async function procesarEstadoDeuda(debt: any, res: Response) {
       });
 
       if (carts.length === 0) {
-        throw new Error('Carrito no encontrado');
+        throw new Error('Carrito no encontrados');
       }
 
       for (let i = 0; i < carts[0].productIds.length; i++) {
