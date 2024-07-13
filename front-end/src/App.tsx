@@ -1,4 +1,4 @@
-import { Redirect, Route, Switch, useLocation } from "wouter";
+import { Redirect, Route, Switch, useLocation, useSearch } from "wouter";
 import Navbar from "./components/Navbar";
 import Welcome from "./components/Welcome/Welcome";
 import { Box } from "@mui/material";
@@ -13,10 +13,18 @@ import CartTable from "./components/Cart/Cart";
 import DebtList from "./components/DebtsList/DebtsList";
 import DebtDetail from "./components/DebtDetail/DebtDetail";
 import LoadingOverlay from "./components/LoadingOverlay/LoadingOverlay";
+import Footer from "./components/Footer/Footer";
+import CartDetail from "./components/CartDetail/CartDetail";
+import Admin from "./components/Admin/Admin";
 function App() {
   const { user } = useUser();
-  const {products, loading} = useProducts();
+  const searchParams = useSearch();
+  const docId = new URLSearchParams(searchParams).get("doc_id");
+  const { products, loading } = useProducts();
   const [location] = useLocation();
+  if (docId) {
+    return <Redirect href={`/debts/${docId}`} />;
+  }
   if (user && location == "/register") {
     return <Redirect href="/inicio" />;
   }
@@ -45,6 +53,9 @@ function App() {
           )}
         </Route>
         <Route path="/admin">
+          <Admin/>
+        </Route>
+        <Route path="/admin">
           {!user ? (
             <Box
               component="section"
@@ -59,8 +70,13 @@ function App() {
             <Redirect href="/" />
           )}
         </Route>
+        <Route path="/cart/:id">
+          <Box component="section" padding={{ xs: 2, sm: 6, md: 10 }}>
+            <CartDetail />
+          </Box>
+        </Route>
         <Route path="/cart">
-          <Box component="section" padding={10}>
+          <Box component="section" padding={{ xs: 2, sm: 6, md: 10 }}>
             <CartTable />
           </Box>
         </Route>
@@ -81,23 +97,27 @@ function App() {
         </Route>
         <Route path="/inicio">
           {user && <Welcome greetings={user?.name} />}
-          <Box
-            component="section"
-            p={2}
-            display="flex"
-            justifyContent="center"
-            flexWrap="wrap"
-            padding={2}
-          >
-            {loading && <LoadingOverlay />}
-            {products.map((product: Product) => (
-              <ProductCard key={product?.id} product={product} />
-            ))}
+          <Box minHeight="90svh">
+            <Box
+              component="section"
+              p={2}
+              display="flex"
+              justifyContent="center"
+              flexWrap="wrap"
+              padding={2}
+            >
+              {loading && <LoadingOverlay />}
+              {products.map((product: Product) => (
+                <ProductCard key={product?.id} product={product} />
+              ))}
+            </Box>
           </Box>
+          <Footer />
         </Route>
         <Route path="/add-product">
           {user?.isAdmin && <AddProductForm></AddProductForm>}
         </Route>
+
         <Route path="/compras">
           <Box
             component="section"
@@ -124,7 +144,7 @@ function App() {
               flexWrap="wrap"
               padding={2}
             >
-              <DebtDetail id={params.id} />
+              {user && <DebtDetail id={params.id} />}
             </Box>
           )}
         </Route>

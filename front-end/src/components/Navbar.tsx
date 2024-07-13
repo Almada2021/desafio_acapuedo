@@ -19,7 +19,13 @@ import { Badge } from "@mui/material";
 import { useCart } from "../hooks/useCart";
 const pages = ["inicio", "compras"];
 const settings = ["Cerrar Sesión"];
+const mapAdmin = {
+  "add-product": "Agregar Producto",
+  admin: "Panel de Administración",
+} as const;
 
+type AdminPage = keyof typeof mapAdmin;
+const adminPages: AdminPage[] = ["add-product", "admin"];
 function Navbar() {
   const { cart } = useCart();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -53,7 +59,7 @@ function Navbar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/inicio"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -96,17 +102,36 @@ function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <Link
-                  key={page}
-                  href={`/${page}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
-                </Link>
-              ))}
+               {pages.map((page) => (
+                    <Link
+                      key={page}
+                      href={`/${page}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <MenuItem onClick={handleCloseNavMenu}>
+                        <Typography textAlign="center">
+                          {page}
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                  ))}
+              {user?.isAdmin && (
+                <>
+                  {adminPages.map((page) => (
+                    <Link
+                      key={page}
+                      href={`/${page}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <MenuItem onClick={handleCloseNavMenu}>
+                        <Typography textAlign="center">
+                          {mapAdmin[page]}
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                  ))}
+                </>
+              )}
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -114,7 +139,7 @@ function Navbar() {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/inicio"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -126,7 +151,7 @@ function Navbar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            ONOFRE
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -143,6 +168,21 @@ function Navbar() {
                 </Button>
               </Link>
             ))}
+            {user?.isAdmin &&
+              adminPages.map((page) => (
+                <Link
+                  href={`/${page}`}
+                  key={page}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {mapAdmin[page]}
+                  </Button>
+                </Link>
+              ))}
           </Box>
           {/* add cart to icon button */}
           <Box marginRight={5}>

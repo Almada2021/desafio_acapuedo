@@ -45,10 +45,21 @@ model Debt {
   id        Int           @id @default(autoincrement())
   status    PaymentStatus
   value     Int
-  payUrl String
-  label String
-  docId  String? 
+  payUrl    String
+  label     String
+  docId     String?
   userId    Int
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
+}
+
+model Cart {
+  id         Int      @id @default(autoincrement())
+  productIds Int[]
+  quantities Int[]
+  totalCost  Int
+  debtId     Int
+  userId     Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

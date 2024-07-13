@@ -1,7 +1,8 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useUser } from "../../hooks/useUser";
+import { Link } from "wouter";
 
 const LoginUserForm = ({url = "/api/login"}: {url?: string}) => {
   const { setUser } = useUser();
@@ -37,6 +38,7 @@ const LoginUserForm = ({url = "/api/login"}: {url?: string}) => {
       spacing={2}
       sx={{ p: 2, boxShadow: 3, width: "400px", margin: "auto" }}
     >
+      {url != "/api/login" && (<Typography variant="h5" textAlign="center"> Admin </Typography>)}
       <TextField
         fullWidth
         label="Email"
@@ -63,6 +65,13 @@ const LoginUserForm = ({url = "/api/login"}: {url?: string}) => {
       <Button type="submit" variant="contained" color="primary">
         Iniciar Sesión
       </Button>
+      <Typography variant="body2" color="textSecondary" align="center">
+        {url === "/api/login" && (
+          <>
+          ¿Eres El Administrador? <Link href="/admin">Entra</Link>
+          </>
+        )}  
+      </Typography>
     </Stack>
   );
 };

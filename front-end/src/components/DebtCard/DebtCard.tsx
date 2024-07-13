@@ -1,5 +1,5 @@
 // src/components/DebtCard/DebtCard.tsx
-import { Card, CardContent, Typography } from "@mui/material";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import { Debt } from "../../lib/entities/Debt";
 import { Link } from "wouter";
 
@@ -8,6 +8,11 @@ interface DebtCardProps {
 }
 
 const DebtCard = ({ debt }: DebtCardProps) => {
+  const statusMap: { [key: string]: string } = {
+    PENDING: "Pendiente",
+    PAID: "Pagado",
+    FAILED: "Fallido",
+  };
   return (
     <Card>
       <CardContent>
@@ -18,17 +23,39 @@ const DebtCard = ({ debt }: DebtCardProps) => {
           Valor: {debt.value.toLocaleString()} Gs
         </Typography>
 
-        <Typography color="textSecondary">
-          Estado: {debt.status}
+        <Typography color="textSecondary" style={{display: "flex"}}>
+          Estado:
+          <div
+            style={{
+              backgroundColor:
+                debt.status === "PAID"
+                  ? "green"
+                  : debt.status === "PENDING"
+                  ? "orange"
+                  : "red",
+                
+              borderRadius: "4px",
+              color: "white",
+              padding: "4px 8px",
+              margin: "0 4px",
+              fontSize: "12px",
+              fontWeight: "bold",
+              textTransform: "uppercase",
+            }}
+          >
+            {statusMap[debt.status] || debt.status}
+          </div>
         </Typography>
         <Typography color="textSecondary">
-          Creada: {new Date(debt.createdAt).toLocaleDateString()}
+          URL De Pago: <a href={debt.payUrl}>Link</a>
         </Typography>
-        <Link
-            href={`/debts/${debt.id}`}
-        >
-           Obtener informacion
-        </Link>
+        <Typography color="textSecondary">
+          Creada: {new Date(debt.createdAt).toLocaleString()}
+        </Typography>
+        <Box display="flex" gap={2}>
+          <Link href={`/debts/${debt.id}`}>Obtener informacion</Link>
+          <Link href={`/cart/${debt.id}`}>Ver Pedido</Link>
+        </Box>
       </CardContent>
     </Card>
   );

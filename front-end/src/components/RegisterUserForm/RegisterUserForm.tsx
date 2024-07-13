@@ -41,7 +41,7 @@ const RegisterUserForm = () => {
     >
       <TextField
         fullWidth
-        label="Nombre"
+        label="Nombre Completo"
         name="name"
         value={formik.values.name}
         onChange={formik.handleChange}

@@ -26,15 +26,14 @@ const CartTable = () => {
   const handleCheckout = async () => {
     const total = calculateTotal();
     if (!user) {
-      alert("Debes iniciar sesión o Registrarte para realizar la compra");
-      return;
+      return window.location.href = "/login";
     }
 
     setLoading(true); // Set loading to true before starting the checkout process
 
     try {
       if(total === 0) {
-        return alert("No hay productos en el carrito");
+        return;
       }
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/debts`,
@@ -47,6 +46,7 @@ const CartTable = () => {
             user: user?.id,
             docId: Math.random().toString(36).substr(2, 9),
             value: total,
+            cart,
             label: "Compra de productos a DON ONOFRE",
           }),
         }

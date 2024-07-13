@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
+import { Link } from "wouter";
 
 interface DebtDetailProps {
   id: string;
@@ -133,21 +134,40 @@ const DebtDetail = ({ id }: DebtDetailProps) => {
   if (error) {
     return <Typography color="error">{error}</Typography>;
   }
-
+  
   return (
     <Box>
       {debt ? (
         <>
-          <Typography variant="h4">Detalles de la Deuda</Typography>
-          <Typography>ID: {debt.docId}</Typography>
+          <Typography variant="h4">Detalles de la Compra</Typography>
           <Typography>Etiqueta: {debt.label}</Typography>
-          <Typography>URL de Pago: <a href={debt.payUrl}>{debt.payUrl}</a></Typography>
-          <Typography>Monto: {debt.amount.value} {debt.amount.currency}</Typography>
-          <Typography>Estado del Pago: {statusMap[debt.payStatus.status] || debt.payStatus.status}</Typography>
-          <Typography>Creado: {debt.created}</Typography>
+          <Typography>URL de Pago: <a href={debt.payUrl}>Link</a></Typography>
+          <Typography>Monto: {Number(debt.amount.value)} {debt.amount.currency}</Typography>
+          <Typography display="flex">Estado del Pago:  <div
+            style={{
+              backgroundColor:
+                debt.payStatus.status.toUpperCase() === "PAID"
+                  ? "green"
+                  : debt.payStatus.status.toUpperCase() === "PENDING"
+                  ? "orange"
+                  : "red",
+                
+              borderRadius: "4px",
+              color: "white",
+              padding: "4px 8px",
+              margin: "0 4px",
+              fontSize: "12px",
+              fontWeight: "bold",
+              textTransform: "uppercase",
+            }}
+          >
+            {statusMap[debt.payStatus.status] || debt.payStatus.status}
+          </div></Typography>
+          <Typography>Creado: {new Date(debt.created).toLocaleString()}</Typography>
+          <Typography>Productos Pedidos: <Link href={`/cart/${id}`}>Boleta</Link></Typography>
         </>
       ) : (
-        <Typography>No se encontraron detalles de la deuda</Typography>
+        <Typography>No se encontraron detalles de la Compra</Typography>
       )}
     </Box>
   );
