@@ -21,11 +21,11 @@ const pages = ["inicio", "compras"];
 const settings = ["Cerrar Sesión"];
 const mapAdmin = {
   "add-product": "Agregar Producto",
-  admin: "Panel de Administración",
+  dashboard: "Panel de Administración",
 } as const;
 
 type AdminPage = keyof typeof mapAdmin;
-const adminPages: AdminPage[] = ["add-product", "admin"];
+const adminPages: AdminPage[] = ["add-product", "dashboard"];
 function Navbar() {
   const { cart } = useCart();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
