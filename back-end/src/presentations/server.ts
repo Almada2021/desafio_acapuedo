@@ -61,16 +61,17 @@ async function procesarEstadoDeuda(debt: any, res: Response) {
         where: { id },
         data: { status: PayStatus[newStatus] },
       });
-
+      // @ts-ignore
       const carts: Cart[] = await prisma?.cart.findMany({
         where: { debtId: id },
       });
-
+      // @ts-ignore
       if (carts.length === 0) {
         throw new Error('Carrito no encontrados');
       }
-
+      // @ts-ignore
       for (let i = 0; i < carts[0].productIds.length; i++) {
+      // @ts-ignore
         await prisma.product.update({
           where: { id: carts[0].productIds[i] },
           data: { stock: { decrement: carts[0].quantities[i] } }
