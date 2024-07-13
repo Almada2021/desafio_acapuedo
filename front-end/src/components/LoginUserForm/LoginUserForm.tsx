@@ -27,7 +27,11 @@ const LoginUserForm = ({url = "/api/login"}: {url?: string}) => {
         body: JSON.stringify(values),
       });
       const data = await response.json();
-      setUser({...data?.user, token: data?.token }); 
+      if(response.ok) {
+        setUser({...data?.user, token: data?.token }); 
+      }else {
+        alert("Error al iniciar sesión");
+      }
     },
   });
 
