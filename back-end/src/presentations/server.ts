@@ -7,6 +7,7 @@ import productRoutes from './routes/productRoutes';
 import cartRoutes from './routes/cartRoutes';
 import bodyParser from 'body-parser';
 import prisma from "../infrastructure/prismaClient";
+import { Cart } from "@prisma/client";
 const app = express();
 const API_SECRET = process.env.API_KEY;
 
@@ -46,7 +47,7 @@ async function procesarEstadoDeuda(debt: any, res: Response) {
   try {
     const { docId, payStatus } = debt;
     let newStatus: "PENDING" | "PAID" | "FAILED" = payStatus.status.toUpperCase();
-    let id =Number(docId)
+    let id = Number(docId);
     const existingDebt = await prisma.debt.findUnique({
       where: { id }
     });
@@ -60,22 +61,21 @@ async function procesarEstadoDeuda(debt: any, res: Response) {
         where: { id },
         data: { status: PayStatus[newStatus] },
       });
-      // ignore eslint rules here
-      // eslint-disable-next-line
-      const cart:any = await prisma.cart.findMany({
-        where: { debtId:id },
+
+      const carts: Cart[] = await prisma.cart.findMany({
+        where: { debtId: id },
       });
 
-      if (!cart) {
+      if (carts.length === 0) {
         throw new Error('Carrito no encontrado');
       }
-      for (let i = 0; i < cart[0].productIds.length; i++) {
+
+      for (let i = 0; i < carts[0].productIds.length; i++) {
         await prisma.product.update({
-          where: { id: cart[0].productIds[i] },
-          data: { stock: { decrement: cart[0].quantities[i] } }
+          where: { id: carts[0].productIds[i] },
+          data: { stock: { decrement: carts[0].quantities[i] } }
         });
       }
-      
 
       res.status(200).json({ info: 'Estado de deuda procesado', debt });
     } else {
