@@ -65,9 +65,9 @@ export default function ProductCard({ product }: { product: Product }) {
           <Typography variant="body2" color="text.secondary">
             Precio: {product.price.toLocaleString()}&nbsp;Gs
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          {/* <Typography variant="body2" color="text.secondary">
             Stock: {product.stock}
-          </Typography>
+          </Typography> */}
         </CardContent>
       </CardActionArea>
       <CardActions style={{ justifyContent: "center" }}>
