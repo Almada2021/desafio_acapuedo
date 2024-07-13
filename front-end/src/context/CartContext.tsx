@@ -28,6 +28,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [cart]);
 
   const addToCart = (product: Product, quantity: number = 0) => {
+    if(quantity === 0){
+      // delet to the cart
+      removeFromCart(String(product.id));
+      return;
+    }
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.id === product.id);
       if (existingItem) {
