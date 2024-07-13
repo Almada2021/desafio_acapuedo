@@ -144,7 +144,7 @@ function App() {
               flexWrap="wrap"
               padding={2}
             >
-              {user && <DebtDetail id={params.id} />}
+              <DebtDetail id={params.id} />
             </Box>
           )}
         </Route>

@@ -62,20 +62,21 @@ async function procesarEstadoDeuda(debt: any, res: Response) {
         data: { status: PayStatus[newStatus] },
       });
       // @ts-ignore
-      const carts: Cart[] = await prisma?.cart.findMany({
+      const carts: Cart[] = await prisma.cart.findMany({
         where: { debtId: id },
       });
-      // @ts-ignore
+      
       if (carts.length === 0) {
         throw new Error('Carrito no encontrado');
       }
-      // @ts-ignore
-      for (let i = 0; i < carts[0].productIds.length; i++) {
-      // @ts-ignore
-        await prisma.product.update({
-          where: { id: carts[0].productIds[i] },
-          data: { stock: { decrement: carts[0].quantities[i] } }
-        });
+      
+      for (const cart of carts) {
+        for (let i = 0; i < cart.productIds.length; i++) {
+          await prisma.product.update({
+            where: { id: cart.productIds[i] },
+            data: { stock: { decrement: cart.quantities[i] } },
+          });
+        }
       }
 
       res.status(200).json({ info: 'Estado de deuda procesado', debt });
