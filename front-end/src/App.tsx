@@ -52,7 +52,7 @@ function App() {
             <Redirect href="/" />
           )}
         </Route>
-        <Route path="/admin">
+        <Route path="/dashboard">
           <Admin/>
         </Route>
         <Route path="/admin">
