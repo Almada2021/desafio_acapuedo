@@ -50,7 +50,7 @@ export default function ProductAdmin() {
   };
 
   return (
-    <TableContainer component={Paper} style={{ margin: "20px" }}>
+    <TableContainer component={Paper} style={{ margin: "20px", overflowY: "scroll", maxHeight: "90vh" }}>
       <Table>
         <TableHead>
           <TableRow>

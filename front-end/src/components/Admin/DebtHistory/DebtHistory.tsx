@@ -60,7 +60,7 @@ const DebtHistory = () => {
   const calculateTotal = (debts: Debt[]) => debts.reduce((total, debt) => total + debt.value, 0);
 
   return (
-    <div>
+    <div style={{ overflow: "scroll", maxHeight: "80svh"}}>
       <Typography variant="h4">Historial de Deudas</Typography>
       <Typography variant="h6">Deudas Pagadas</Typography>
       <TableContainer component={Paper}>

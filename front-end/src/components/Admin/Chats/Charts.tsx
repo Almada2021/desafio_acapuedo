@@ -14,7 +14,7 @@ const SalesChart = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
-  const [showDayChart, setShowDayChart] = useState(true);
+  const [showDayChart, setShowDayChart] = useState(false);
 
   useEffect(() => {
     const fetchDebts = async () => {
