@@ -18,8 +18,8 @@ const AddProductForm = () => {
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
-      price: Yup.number().required("Required"),
-      stock: Yup.number().required("Required"),
+      price: Yup.number().required("Required").min(0, "No puede ser negativo el precio"),
+      stock: Yup.number().required("Required").min(0, "No puede ser negativo el stock"),
       imageUrl: Yup.string().url("Invalid URL"),
     }),
     onSubmit: async (values) => {

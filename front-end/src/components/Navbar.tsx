@@ -20,12 +20,11 @@ import { useCart } from "../hooks/useCart";
 const pages = ["inicio", "compras"];
 const settings = ["Cerrar Sesión"];
 const mapAdmin = {
-  "add-product": "Agregar Producto",
   dashboard: "Panel de Administración",
 } as const;
 
 type AdminPage = keyof typeof mapAdmin;
-const adminPages: AdminPage[] = ["add-product", "dashboard"];
+const adminPages: AdminPage[] = ["dashboard"];
 function Navbar() {
   const { cart } = useCart();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
