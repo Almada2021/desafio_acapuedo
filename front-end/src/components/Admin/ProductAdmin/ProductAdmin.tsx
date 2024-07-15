@@ -74,8 +74,8 @@ export default function ProductAdmin() {
     <>
     <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
 
-      <IconButton color="primary" onClick={() => setOpenAdd(true)} >
-      <AddCircleIcon/>
+      <IconButton  color="primary" onClick={() => setOpenAdd(true)} >
+      <AddCircleIcon />
       </IconButton>
     </div>
       <TableContainer

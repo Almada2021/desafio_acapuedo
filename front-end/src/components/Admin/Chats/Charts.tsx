@@ -62,7 +62,9 @@ const SalesChart = () => {
 
   const { salesByDay, salesByHour } = processSalesData(debts);
 
-  const dayData = Object.keys(salesByDay).map(day => ({
+  const dayData = Object.keys(salesByDay)
+  .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
+  .map(day => ({
     date: day,
     ventas: salesByDay[day],
   }));
