@@ -28,6 +28,7 @@ export class CartService {
                 imageUrl: product.imageUrl,
                 createdAt: product.createdAt,
                 updatedAt: product.updatedAt,
+                userId: cart.userId,
                 quantity: cart.quantities[index],
               })),
             };

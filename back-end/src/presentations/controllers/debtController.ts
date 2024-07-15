@@ -70,6 +70,9 @@ export class DebtController {
         const paidDebts = await prisma.debt.findMany({
           where: { status: 'PAID' },
         });
+        orderBy: {
+          createdAt: "desc"
+        }
         return res.json( paidDebts );
       }
   
@@ -77,16 +80,25 @@ export class DebtController {
         const pendingDebts = await prisma.debt.findMany({
           where: { status: 'PENDING' },
         });
+        orderBy: {
+          createdAt: "desc"
+        }
         return res.json( pendingDebts );
       }
   
       if (status === 'all') {
         const paidDebts = await prisma.debt.findMany({
           where: { status: 'PAID' },
+          orderBy: {
+            createdAt: "desc"
+          }
         });
   
         const pendingDebts = await prisma.debt.findMany({
           where: { status: 'PENDING' },
+          orderBy: {
+            createdAt: "desc"
+          }
         });
   
         return res.json({

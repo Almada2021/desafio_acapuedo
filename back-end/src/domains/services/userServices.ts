@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import prisma from "../../infrastructure/prismaClient";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -123,5 +124,19 @@ export class UserService {
       },
       token,
     };
+  }
+  async getUserById(id: string | number) : Promise<User | null> {
+    if(typeof id == 'number') {
+      const user = await prisma.user.findUnique({
+        where: { id },
+      });
+      return user;
+    }else {
+      let uid = parseInt(id);
+      const user = await prisma.user.findUnique({
+        where: {  id: uid},
+      });
+      return user;
+    }
   }
 }

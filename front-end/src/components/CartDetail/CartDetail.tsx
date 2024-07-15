@@ -12,23 +12,25 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-import { useUser } from "../../hooks/useUser";
+// import { useUser } from "../../hooks/useUser";
 import jsPDF from "jspdf";
+import useUniqueUser from "../../hooks/useUniqueUser";
 
 interface Product {
   id: number;
   name: string;
   price: number;
   quantity: number;
+  userId: number;
 }
 
 const CartDetail = () => {
-  const { user } = useUser();
+  // const { user } = useUser();
   const { id } = useParams();
   const [cart, setCart] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const { user }  = useUniqueUser({id: cart[0]?.userId});
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -137,6 +139,17 @@ const CartDetail = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      {user && (
+        <div>
+
+        <Typography variant="h5" gutterBottom>
+          Pedido Hecho por: {user.name}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Correo: {user.email}
+        </Typography>
+        </div>
+      )}
     </Box>
   );
 };
